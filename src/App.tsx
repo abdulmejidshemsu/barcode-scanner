@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// @ts-check
 
-function App() {
+import React, { useState } from 'react';
+import './App.css';
+import Html5QrcodePlugin from './Html5QrcodePlugin';
+
+const App = () => {
+  const [decodedResult, setDecodedResult] = useState('EMPTY');
+  const onNewScanResult = (decodedText: React.SetStateAction<string>, decodedResult: any) => {
+    console.log("App [result]", decodedResult);
+    // setDecodedResult(decodedText);
+
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <section className="App-section">
+        <div className="App-section-title"> Html5-qrcode React demo</div>
+        <br />
+        <br />
+        <br />
+        <Html5QrcodePlugin
+          fps={10}
+          qrbox={250}
+          disableFlip={false}
+          qrCodeSuccessCallback={onNewScanResult}
+        />
+        {/* decodedResult: {
+          decodedResult
+        } */}
+      </section>
     </div>
   );
-}
+};
 
 export default App;
