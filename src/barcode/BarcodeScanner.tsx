@@ -1,48 +1,13 @@
-import { Html5Qrcode, Html5QrcodeScanner } from "@cosva-lab/html5-qrcode";
+import { Html5Qrcode } from "@cosva-lab/html5-qrcode";
 import { CameraDevice } from "@cosva-lab/html5-qrcode/esm/core";
 import { useState } from "react";
 import SelectCamera from "./SelectCamera";
+import "./Barcode.css";
+
+
 const qrcodeRegionId = "html5qr-code-full-region";
 
-const createConfig = (props: {
-    verbose?: any;
-    qrCodeSuccessCallback?: any;
-    qrCodeErrorCallback?: any;
-    fps?: any;
-    qrbox?: any;
-    aspectRatio?: any;
-    disableFlip?: any;
-}) => {
-    let config = {
-        fps: undefined,
-        qrbox: undefined,
-        aspectRatio: undefined,
-        disableFlip: undefined,
-    };
-    if (props.fps) {
-        config.fps = props.fps;
-    }
-    if (props.qrbox) {
-        config.qrbox = props.qrbox;
-    }
-    if (props.aspectRatio) {
-        config.aspectRatio = props.aspectRatio;
-    }
-    if (props.disableFlip !== undefined) {
-        config.disableFlip = props.disableFlip;
-    }
-    return config;
-};
-
-const Html5QrcodePlugin = (props: {
-    verbose?: any;
-    qrCodeSuccessCallback?: any;
-    qrCodeErrorCallback?: any;
-    fps?: any;
-    qrbox?: any;
-    aspectRatio?: any;
-    disableFlip?: any;
-}) => {
+const BarcodeScanner = () => {
 
     const [selectedCamera, setSelectedCamera] = useState<CameraDevice>();
     const [isScanning, setIsScanning] = useState<Boolean>(false);
@@ -52,24 +17,20 @@ const Html5QrcodePlugin = (props: {
     function startReadingBarcode () {
         if (selectedCamera) {
             setDecodedText(null);
-            let _html5QrCode = new Html5Qrcode(qrcodeRegionId);
+
+            const _html5QrCode = new Html5Qrcode(qrcodeRegionId);
             setHtml5QrCode(_html5QrCode);
 
             _html5QrCode.start(
                 selectedCamera.id,
-                {
-                    fps: 10,
-                    qrbox: 250,
-                    disableFlip: false,
-                },
+                {},
                 (decodedText) => {
                     if (decodedText) {
                         setDecodedText(decodedText);
                     }
-                },
-                (errorMessage) => {
                 })
                 .catch((err) => {
+                    console.log('Catch: ' + err);
                 });
 
             setIsScanning(true);
@@ -96,7 +57,6 @@ const Html5QrcodePlugin = (props: {
     }
 
     return <div>
-
 
         <div className="min-w-screen h-screen fixed  left-0 top-0  flex justify-center items-center inset-0 z-50 bg-green-100 overflow-y-scroll bg-cover" style={{ backgroundImage: 'url(https://www.camcode.com/wp-content/uploads/2021/08/10414706_barcode-on-blue-background-min.jpg)' }}>
 
@@ -146,16 +106,13 @@ const Html5QrcodePlugin = (props: {
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-14 w-14 p-2 cursor-pointer hover:bg-red-700 text-gray-50 rounded-full bg-red-600">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-
                                 </button>
                         }
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div >;
 };
 
-export default Html5QrcodePlugin;
+export default BarcodeScanner;

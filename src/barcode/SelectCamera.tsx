@@ -13,6 +13,7 @@ export default function SelectCamera (props: {
     const [isPermissionDenied, setIsPermissionDenied] = useState<Boolean>(false);
     const [isLoadingCamera, setIsLoadingCamera] = useState<Boolean>(false);
 
+
     useEffect(() => {
         async function fetchCameras () {
             setIsLoadingCamera(true);
@@ -31,6 +32,7 @@ export default function SelectCamera (props: {
         }
 
         fetchCameras();
+        // eslint-disable-next-line
     }, []);
 
 
@@ -46,7 +48,7 @@ export default function SelectCamera (props: {
                         Loading Camera...
                     </button>
                     :
-                    cameras.length == 0 ? <CameraError message={isPermissionDenied === true ? 'Permission denied' : 'No Available Camera Device'} /> :
+                    cameras.length === 0 ? <CameraError message={isPermissionDenied === true ? 'Permission denied' : 'No Available Camera Device'} /> :
                         <div className="-mt-16 w-64">
                             <Listbox value={props.selectedCamera} onChange={props.setSelectedCamera}>
                                 <div className="relative mt-1">
@@ -99,6 +101,5 @@ export default function SelectCamera (props: {
                         </div>
             }
         </div>
-
     )
 }
